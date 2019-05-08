@@ -12,24 +12,6 @@ pub struct Lettre {
     pub ligne5: String,
     pub ligne6: String,
 }
-//
-// let lettrea = Lettre {
-//      ligne1: String::from("        "),
-//      ligne2: String::from("  __ _  "),
-//      ligne3: String::from(" / _` | "),
-//      ligne4: String::from("| ( | | "),
-//      ligne5: String::from(" ___,_| "),
-//      ligne6: String::from("        "),
-// }
-//
-// let lettreb = Lettre {
-//      ligne1: String::from(" _      "),
-//      ligne2: String::from("| |_    "),
-//      ligne3: String::from("| '_    "),
-//      ligne4: String::from("| |_) | "),
-//      ligne5: String::from("|_.__/  "),
-//      ligne6: String::from("        "),
-// }
 
 impl Lettre {
 
