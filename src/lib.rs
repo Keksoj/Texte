@@ -137,12 +137,13 @@ pub fn chars_to_structs(vecteur_caracteres: Vec<char>) -> Vec<Lettre> {
 
     // pour chaque caractère, ajouter le struct correspondant au vecteur de struct
     for car in iterateur {
-        match car {
-            'a' => { vecteur_de_structs.push(lettrea.clone()); println!("rajouté a"); }
-            'b' => { vecteur_de_structs.push(lettreb.clone()); println!("rajouté b") }
-            'c' => {vecteur_de_structs.push(lettrec.clone()); println!("rajouté c") }
-            _ => { println!("on panique !"); break }
-        }
+        vecteur_de_structs.push(char_to_struct(*car))
+        // match car {
+        //     'a' => { vecteur_de_structs.push(lettrea.clone()); println!("rajouté a") }
+        //     'b' => { vecteur_de_structs.push(lettreb.clone()); println!("rajouté b") }
+        //     'c' => { vecteur_de_structs.push(lettrec.clone()); println!("rajouté c") }
+        //     _ => { println!("on panique !"); break }
+        // }
     }
 
     vecteur_de_structs
@@ -176,13 +177,12 @@ pub fn char_to_struct(caractere: char) -> Lettre {
                 },
         // En cas d'erreur, on renvoie un gros X
         _ => Lettre {
-            ligne1: "OO    OO",
-            ligne2: " OO  OO ",
-            ligne3: "  OOOO  ",
-            ligne4: "  OOOO  ",
-            ligne5: " OO  OO ",
-            ligne6: "OO    OO",
-        },
-
+                ligne1: "OO    OO",
+                ligne2: " OO  OO ",
+                ligne3: "  OOOO  ",
+                ligne4: "  OOOO  ",
+                ligne5: " OO  OO ",
+                ligne6: "OO    OO",
+            },
     }
 }
