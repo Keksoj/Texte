@@ -11,6 +11,9 @@
 
 mod lib;
 use lib::Lettre;
+use lib::Mot;
+use lib::string_to_char_vector;
+use lib::chars_to_structs;
 
 
 fn main() {
@@ -22,77 +25,22 @@ fn main() {
     println!("Voici l'entrée utilisateur : {}\n", entree);
 
     // Décomposer l'entrée en une collection de caractères de type char
-    // D'abord, créer un itérateur qui parcourt l'entrée
-    let iterateur = entree.chars();
-    // Créer un vecteur de caractère
-    let mut vecteur_caracteres: Vec<char> = Vec::new();
-    // itérer pour passer les caractères de l'un à l'autre
-    for caractere in iterateur {
-        println!("Ajoutons {} au vecteur de caractères", caractere);
-        vecteur_caracteres.push(caractere)
-    }
+    let vecteur_caracteres: Vec<char> = string_to_char_vector(entree);
     println!("\nVoici l'entrée sous forme de vecteur : {:?}", vecteur_caracteres);
 
-
-
-    // Introduire une lettre, ici le a
-    let lettrea = Lettre {
-        ligne1: String::from("        "),
-        ligne2: String::from("  __ _  "),
-        ligne3: String::from(" / _` | "),
-        ligne4: String::from("| ( | | "),
-        ligne5: String::from(" ___,_| "),
-        ligne6: String::from("        "),
-    };
-
-    let lettreb = Lettre {
-        ligne1: String::from(" _      "),
-        ligne2: String::from("| |_    "),
-        ligne3: String::from("| '_    "),
-        ligne4: String::from("| |_) | "),
-        ligne5: String::from("|_.__/  "),
-        ligne6: String::from("        "),
-    };
-
-    let lettrec = Lettre {
-        ligne1: String::from("        "),
-        ligne2: String::from("  ____  "),
-        ligne3: String::from(" / ___| "),
-        ligne4: String::from("| (___  "),
-        ligne5: String::from(" _____| "),
-        ligne6: String::from("        "),
-    };
-
-
-
-    // Créer un itérateur sur le vecteur de caractère
-    let vecteur_caracteres_iter = vecteur_caracteres.iter();
-
-    // Créer le vecteur de structs, il est vide pour le moment
-    let mut vecteur_structs = Vec::new();
-
-    // pour chaque caractère, ajouter le struct correspondant au vecteur de struct
-    for car in vecteur_caracteres_iter {
-        match car {
-            'a' => vecteur_structs.push(&lettrea),
-            'b' => vecteur_structs.push(&lettreb),
-            'c' => vecteur_structs.push(&lettrec),
-            _ => break,
-        }
-    }
-
-    // Pour débugueur, vérifions que le vecteur de structs est bien
-    let iterat = vecteur_structs.iter();
+    // transformer le vecteur de caractère en vecteur de structs, l'afficher
+    let vecteur_structs = chars_to_structs(vecteur_caracteres);
     println!("Nous avons converti ce vecteur de caractères en vecteur de structs,
 que voici:");
+    let iterat = vecteur_structs.iter();
     for lettre in iterat {
         println!("{}", lettre);
     }
 
 
     // Créer le struct final, qui contiendra les lignes concaténées
-    let mut struct_final: Lettre = Lettre::new();
-
+    let mut struct_final = Mot::new();
+    
     // Six fois de suite, on ajoute les lignes de la lettre aux lignes du mot
     // Et on passe à la lettre suivante grâce à l'itérateur.
     let nouveliterateur = vecteur_structs.iter();
