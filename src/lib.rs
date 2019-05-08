@@ -3,7 +3,6 @@
 // Chaque lettre est un struct de six lignes, des
 
 use std::fmt;
-use std::char;
 
 pub struct Lettre {
     pub ligne1: &'static str,
@@ -32,29 +31,6 @@ impl Mot {
             ligne4: String::new(),
             ligne5: String::new(),
             ligne6: String::new(),
-        }
-    }
-}
-
-impl Lettre {
-    pub fn new() -> Self {
-        Self {
-            ligne1: "",
-            ligne2: "",
-            ligne3: "",
-            ligne4: "",
-            ligne5: "",
-            ligne6: "",
-        }
-    }
-    pub fn clone(&self) -> Self {
-        Self {
-            ligne1: self.ligne1.clone(),
-            ligne2: self.ligne2.clone(),
-            ligne3: self.ligne3.clone(),
-            ligne4: self.ligne4.clone(),
-            ligne5: self.ligne5.clone(),
-            ligne6: self.ligne6.clone(),
         }
     }
 }
@@ -99,35 +75,8 @@ pub fn string_to_char_vector(entree: String) -> Vec<char> {
     vecteur_caracteres
 }
 
-
+// convertir le vecteur de caractères en vecteur de structs-lettres
 pub fn chars_to_structs(vecteur_caracteres: Vec<char>) -> Vec<Lettre> {
-
-    let lettrea = Lettre {
-        ligne1: "        ",
-        ligne2: "  __ _  ",
-        ligne3: " / _` | ",
-        ligne4: "| ( | | ",
-        ligne5: " ___,_| ",
-        ligne6: "        ",
-    };
-    println!("la lettre a : {}", lettrea.ligne3);
-    let lettreb = Lettre {
-        ligne1: " _      ",
-        ligne2: "| |_    ",
-        ligne3: "| '_    ",
-        ligne4: "| |_) | ",
-        ligne5: "|_.__/  ",
-        ligne6: "        ",
-    };
-
-    let lettrec = Lettre {
-        ligne1: "        ",
-        ligne2: "  ____  ",
-        ligne3: " / ___| ",
-        ligne4: "| (___  ",
-        ligne5: " _____| ",
-        ligne6: "        ",
-    };
 
     // Créer un itérateur sur le vecteur de caractère
     let iterateur = vecteur_caracteres.iter();
@@ -135,45 +84,81 @@ pub fn chars_to_structs(vecteur_caracteres: Vec<char>) -> Vec<Lettre> {
     // Créer le vecteur de structs, il est vide pour le moment
     let mut vecteur_de_structs = Vec::new();
 
-    // pour chaque caractère, ajouter le struct correspondant au vecteur de struct
-    for car in iterateur {
-        vecteur_de_structs.push(char_to_struct(*car))
-        // match car {
-        //     'a' => { vecteur_de_structs.push(lettrea.clone()); println!("rajouté a") }
-        //     'b' => { vecteur_de_structs.push(lettreb.clone()); println!("rajouté b") }
-        //     'c' => { vecteur_de_structs.push(lettrec.clone()); println!("rajouté c") }
-        //     _ => { println!("on panique !"); break }
-        // }
+    // pour chaque caractère, compléter le vecteur de struct avec un struct-lettre
+    for character in iterateur {
+        vecteur_de_structs.push(char_to_struct(*character))
     }
-
     vecteur_de_structs
 }
 
+// convertir un caractère individuel en struct-lettre
 pub fn char_to_struct(caractere: char) -> Lettre {
     match caractere {
         'a' => Lettre {
-                    ligne1: "        ",
-                    ligne2: "  __ _  ",
-                    ligne3: " / _` | ",
-                    ligne4: "| ( | | ",
-                    ligne5: " ___,_| ",
-                    ligne6: "        ",
+                    ligne1: r#"        "#,
+                    ligne2: r#"  __ _  "#,
+                    ligne3: r#" / _` | "#,
+                    ligne4: r#"| (_| | "#,
+                    ligne5: r#" \__,_| "#,
+                    ligne6: r#"        "#,
                 },
         'b' => Lettre {
-                    ligne1: " _      ",
-                    ligne2: "| |_    ",
-                    ligne3: "| '_    ",
-                    ligne4: "| |_) | ",
-                    ligne5: "|_.__/  ",
-                    ligne6: "        ",
+                    ligne1: r#" _      "#,
+                    ligne2: r#"| |__   "#,
+                    ligne3: r#"| '_ \  "#,
+                    ligne4: r#"| |_) | "#,
+                    ligne5: r#"|_.__/  "#,
+                    ligne6: r#"        "#,
                 },
         'c' => Lettre {
-                    ligne1: "        ",
-                    ligne2: "  ____  ",
-                    ligne3: " / ___| ",
-                    ligne4: "| (___  ",
-                    ligne5: " _____| ",
-                    ligne6: "        ",
+                    ligne1: r#"        "#,
+                    ligne2: r#"  ____  "#,
+                    ligne3: r#" / ___| "#,
+                    ligne4: r#"| (___  "#,
+                    ligne5: r#" \____| "#,
+                    ligne6: r#"        "#,
+                },
+        'd' => Lettre {
+                    ligne1: r#"     _  "#,
+                    ligne2: r#"  __| | "#,
+                    ligne3: r#" / _  | "#,
+                    ligne4: r#"| (_| | "#,
+                    ligne5: r#" \__,_| "#,
+                    ligne6: r#"        "#,
+                },
+        'e' => Lettre {
+                    ligne1: r#"        "#,
+                    ligne2: r#"  ___   "#,
+                    ligne3: r#" / _  \ "#,
+                    ligne4: r#"|  ___/ "#,
+                    ligne5: r#" \____| "#,
+                    ligne6: r#"        "#,
+                },
+        'f' => Lettre {
+                    ligne1: r#"  __  "#,
+                    ligne2: r#" / _| "#,
+                    ligne3: r#"| |_  "#,
+                    ligne4: r#"|  _| "#,
+                    ligne5: r#"|_|   "#,
+                    ligne6: r#"      "#,
+                },
+
+
+        ' ' => Lettre {
+                    ligne1: "      ",
+                    ligne2: "      ",
+                    ligne3: "      ",
+                    ligne4: "      ",
+                    ligne5: "      ",
+                    ligne6: "      ",
+                },
+        ',' => Lettre {
+                    ligne1: "      ",
+                    ligne2: "      ",
+                    ligne3: "      ",
+                    ligne4: " _    ",
+                    ligne5: "( )   ",
+                    ligne6: "|/    ",
                 },
         // En cas d'erreur, on renvoie un gros X
         _ => Lettre {

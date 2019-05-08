@@ -10,7 +10,6 @@
     // Compiler toutes les String du struct en une seule
 
 mod lib;
-use lib::Lettre;
 use lib::Mot;
 use lib::string_to_char_vector;
 use lib::chars_to_structs;
@@ -21,7 +20,7 @@ fn main() {
 
     // Utiliser clap pour récupérer l'entrée utilisateur
     // hardcodons l'entrée utilisateur pour le moment
-    let entree: String = String::from("acb");
+    let entree: String = String::from("aéc b f,e");
     println!("Voici l'entrée utilisateur : {}\n", entree);
 
     // Décomposer l'entrée en une collection de caractères de type char
@@ -30,22 +29,24 @@ fn main() {
 
     // transformer le vecteur de caractère en vecteur de structs, l'afficher
     let vecteur_structs = chars_to_structs(vecteur_caracteres);
-    println!("Nous avons converti ce vecteur de caractères en vecteur de structs,
-que voici:");
-    let iterat = vecteur_structs.iter();
-    for lettre in iterat {
-        println!("{}", lettre);
-    }
+
+    // du débogage qui affiche les structs
+//     println!("Nous avons converti ce vecteur de caractères en vecteur de structs,
+// que voici:");
+//     let iterat = vecteur_structs.iter();
+//     for lettre in iterat {
+//         println!("{}", lettre);
+//     }
 
 
     // Créer le struct final, qui contiendra les lignes concaténées
     let mut struct_final = Mot::new();
-    
+
     // Six fois de suite, on ajoute les lignes de la lettre aux lignes du mot
     // Et on passe à la lettre suivante grâce à l'itérateur.
     let nouveliterateur = vecteur_structs.iter();
     for lettre in nouveliterateur {
-        println!("l'itérateur montre:\n{}", lettre);
+        // println!("l'itérateur montre:\n{}", lettre);  // débogage
         struct_final.ligne1.push_str(&lettre.ligne1);
         struct_final.ligne2.push_str(&lettre.ligne2);
         struct_final.ligne3.push_str(&lettre.ligne3);
