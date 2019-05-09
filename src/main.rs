@@ -2,58 +2,41 @@
 
 // Le but du jeu est d'afficher du gros texte en ascii, par exemple
 
-// Comme input : une string, et comme output : une string aussi.
+// Comme input : une string du standard input
+// comme output : une string aussi au standard output
 // Entre deux, plusieurs transformations
     // De String à Vec<char>
     // de Vec<char> à Vec<Lettre> où Lettre est un struct de String
     // de Vec<Lettre> à un seul struct de String
     // Compiler toutes les String du struct en une seule
 
+use std::io;
 mod lib;
-use lib::Mot;
 use lib::string_to_char_vector;
 use lib::chars_to_structs;
-
+use lib::structs_to_one;
 
 fn main() {
 
-
-    // Utiliser clap pour récupérer l'entrée utilisateur
-    // hardcodons l'entrée utilisateur pour le moment
-    let entree: String = String::from("aéc b f,e");
-    println!("Voici l'entrée utilisateur : {}\n", entree);
+    // Récupérer l'entrée standard
+    let mut entree: String = String::new();
+    match io::stdin().read_line(&mut entree) {
+        Ok(n) => {
+            // println!("On va convertir ce texte : {}", entree);
+        }
+        Err(error) => println!("erreur: {}", error),
+    }
 
     // Décomposer l'entrée en une collection de caractères de type char
     let vecteur_caracteres: Vec<char> = string_to_char_vector(entree);
-    println!("\nVoici l'entrée sous forme de vecteur : {:?}", vecteur_caracteres);
+    // println!("\nVoici l'entrée sous forme de vecteur : {:?}", vecteur_caracteres);
 
-    // transformer le vecteur de caractère en vecteur de structs, l'afficher
+    // transformer le vecteur de caractère en vecteur de structs
     let vecteur_structs = chars_to_structs(vecteur_caracteres);
 
-    // du débogage qui affiche les structs
-//     println!("Nous avons converti ce vecteur de caractères en vecteur de structs,
-// que voici:");
-//     let iterat = vecteur_structs.iter();
-//     for lettre in iterat {
-//         println!("{}", lettre);
-//     }
-
-
-    // Créer le struct final, qui contiendra les lignes concaténées
-    let mut struct_final = Mot::new();
-
-    // Six fois de suite, on ajoute les lignes de la lettre aux lignes du mot
-    // Et on passe à la lettre suivante grâce à l'itérateur.
-    let nouveliterateur = vecteur_structs.iter();
-    for lettre in nouveliterateur {
-        // println!("l'itérateur montre:\n{}", lettre);  // débogage
-        struct_final.ligne1.push_str(&lettre.ligne1);
-        struct_final.ligne2.push_str(&lettre.ligne2);
-        struct_final.ligne3.push_str(&lettre.ligne3);
-        struct_final.ligne4.push_str(&lettre.ligne4);
-        struct_final.ligne5.push_str(&lettre.ligne5);
-        struct_final.ligne6.push_str(&lettre.ligne6);
-    };
+    // transformer le vecteur de structs en un seul vecteur-mot
+    let struct_final = structs_to_one(vecteur_structs);
+    // Il est affichable car il implémente fmt::Display
     println!("{}", struct_final);
 
 }
