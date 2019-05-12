@@ -13,8 +13,10 @@
 use std::io;
 mod lib;
 use lib::string_to_char_vector;
-use lib::chars_to_structs;
-use lib::structs_to_one;
+use lib::split_into_lines;
+use lib::decorer;
+use lib::rassembler;
+
 
 fn main() {
 
@@ -28,15 +30,22 @@ fn main() {
     }
 
     // Décomposer l'entrée en une collection de caractères de type char
-    let vecteur_caracteres: Vec<char> = string_to_char_vector(entree);
+    let vecteur_caracteres = string_to_char_vector(entree);
     // println!("\nVoici l'entrée sous forme de vecteur : {:?}", vecteur_caracteres);
 
-    // transformer le vecteur de caractère en vecteur de structs
-    let vecteur_structs = chars_to_structs(vecteur_caracteres);
+    let lignes_de_caracteres = split_into_lines(vecteur_caracteres);
 
-    // transformer le vecteur de structs en un seul vecteur-mot
-    let struct_final = structs_to_one(vecteur_structs);
-    // Il est affichable car il implémente fmt::Display
-    println!("{}", struct_final);
+    let paragraphe = decorer(lignes_de_caracteres);
 
+    println!("Voilà le tout:\n{}", rassembler(paragraphe));
+    //
+    // // transformer le vecteur de caractère en vecteur de structs
+    // let vecteur_structs = chars_to_structs(vecteur_caracteres);
+    //
+    // // transformer le vecteur de structs en un seul vecteur-mot
+    // let paragraphe = structs_to_one(vecteur_structs);
+    //
+    // // transformer le paragraphe en une seule chaine de caractères
+    // let chaine = paragraph_to_string(paragraphe);
+    // println!("{}", chaine);
 }
