@@ -1,9 +1,6 @@
 // 2019-05-07
 
-// Chaque Letter est un struct de six lines, des
-
 use std::fmt;
-
 use crate::alphabet::char_to_struct;
 
 pub struct Letter {

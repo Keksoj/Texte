@@ -15,8 +15,20 @@ It is a figlet-like utility that takes standard input and prints an ASCII banner
 
 I would be most pleased if anyone cares to read the code and comment it.
 
-### Clone the thing
+### Get the thing running
 
+Assuming you're familiar with git and [Cargo](https://doc.rust-lang.org/cargo/).
+
+```bash
+git clone https://github.com/Keksoj/Texte.git
+cd texte
+cargo run
 ```
-git clone... https (wait I've got to create the repository first)
+
+Since it takes from standard output, you can even pipe it like so:
+
+```bash
+echo "Dumbledore is gay!" | cargo run | lolcat -a
 ```
+
+(install [lolcat](https://www.tecmint.com/lolcat-command-to-output-rainbow-of-colors-in-linux-terminal/) first, you won't regret it).
