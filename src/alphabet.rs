@@ -1,179 +1,13 @@
-// 2019-05-07
+use crate::util::Letter;
 
-// Chaque lettre est un struct de six lines, des
-
-use std::fmt;
-
-pub struct Lettre {
-    pub line1: &'static str,
-    pub line2: &'static str,
-    pub line3: &'static str,
-    pub line4: &'static str,
-    pub line5: &'static str,
-    pub line6: &'static str,
-}
-
-pub struct Mot {
-    pub line1: String,
-    pub line2: String,
-    pub line3: String,
-    pub line4: String,
-    pub line5: String,
-    pub line6: String,
-}
-
-
-impl Mot {
-    pub fn new() -> Self {
-        Self {
-            line1: String::new(),
-            line2: String::new(),
-            line3: String::new(),
-            line4: String::new(),
-            line5: String::new(),
-            line6: String::new(),
-        }
-    }
-}
-impl Mot {
-    pub fn clone(&self) -> Self {
-        Self {
-            line1: self.line1.clone(),
-            line2: self.line2.clone(),
-            line3: self.line3.clone(),
-            line4: self.line4.clone(),
-            line5: self.line5.clone(),
-            line6: self.line6.clone(),
-        }
-    }
-}
-
-impl fmt::Display for Lettre {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f,"{}\n{}\n{}\n{}\n{}\n{}",
-            &self.line1,
-            &self.line2,
-            &self.line3,
-            &self.line4,
-            &self.line5,
-            &self.line6,
-        )
-    }
-}
-
-impl fmt::Display for Mot {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f,"{}\n{}\n{}\n{}\n{}\n{}",
-            &self.line1,
-            &self.line2,
-            &self.line3,
-            &self.line4,
-            &self.line5,
-            &self.line6,
-        )
-    }
-}
-//
-// impl fmt::Display for Vec<Mot> {
-//     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-//         let mut chaine: String = String::new();
-//         let iterateur = self.iter();
-//         for mot in iterateur {
-//             chaine.push_str(&mot.line1);
-//         }
-//         write!(f, "{}", chaine)
-//     }
-// }
-
-// convertir l'entrée utilisateur en vecteur de caractères
-pub fn string_to_char_vector(entree: String) -> Vec<char> {
-
-    // itérons
-    let iterateur = entree.chars();
-    // Créer un vecteur de caractère
-    let mut vecteur_caracteres: Vec<char> = Vec::new();
-    // itérer pour passer les caractères de l'un à l'autre
-    for caractere in iterateur {
-        // println!("Ajoutons {} au vecteur de caractères", caractere);
-        vecteur_caracteres.push(caractere)
-    }
-    vecteur_caracteres
-}
-
-pub fn split_into_lines(vecteur_de_caracteres: Vec<char>) -> Vec<Vec<char>> {
-
-    // cloner le vecteur pour le splitter comme on veut
-    let mut vecteur_a_splitter: Vec<char> = vecteur_de_caracteres.clone();
-
-    // créer le vecteur de vecteur
-    let mut lignes: Vec<Vec<char>> = Vec::new();
-
-    // Faire des lignes de dix caractères
-    while vecteur_a_splitter.len() > 20 {
-        let ligne: Vec<char> = vecteur_a_splitter.drain(0..20).collect();
-        println!("On rajoute la ligne {:?}", ligne);
-        lignes.push(ligne);
-    }
-
-    // rajouter le reste
-    println!("Et il reste ça : {:?}", vecteur_a_splitter);
-    lignes.push(vecteur_a_splitter);
-
-    println!("{:?}", lignes);
-
-    lignes
-}
-
-pub fn decorer(lignes: Vec<Vec<char>>) -> Vec<Mot> {
-
-    let mut jolies_lignes: Vec<Mot> = Vec::new();
-
-    let iterer_les_lignes = lignes.iter();
-
-    for ligne in iterer_les_lignes {
-
-        let mut ligne_a_completer = Mot::new() ;
-
-        let iterer_les_lettres = ligne.iter();
-
-        for lettre in iterer_les_lettres {
-            ligne_a_completer.line1.push_str(char_to_struct(*lettre).line1);
-            ligne_a_completer.line2.push_str(char_to_struct(*lettre).line2);
-            ligne_a_completer.line3.push_str(char_to_struct(*lettre).line3);
-            ligne_a_completer.line4.push_str(char_to_struct(*lettre).line4);
-            ligne_a_completer.line5.push_str(char_to_struct(*lettre).line5);
-            ligne_a_completer.line6.push_str(char_to_struct(*lettre).line6);
-        }
-        println!("On a ajouté la ligne : \n{}", ligne_a_completer);
-
-        jolies_lignes.push(ligne_a_completer);
-    }
-    // println!("Ce qui nous donne : {}", jolies_lignes);
-    jolies_lignes
-}
-
-pub fn rassembler(jolies_lignes: Vec<Mot>) -> String {
-    let mut paragraphe = String::new();
-    let iterateur = jolies_lignes.iter();
-    for ligne in iterateur {
-        paragraphe.push_str(&ligne.line1); paragraphe.push('\n');
-        paragraphe.push_str(&ligne.line2); paragraphe.push('\n');
-        paragraphe.push_str(&ligne.line3); paragraphe.push('\n');
-        paragraphe.push_str(&ligne.line4); paragraphe.push('\n');
-        paragraphe.push_str(&ligne.line5); paragraphe.push('\n');
-        paragraphe.push_str(&ligne.line6); paragraphe.push('\n');
-    }
-    paragraphe
-}
-
-// ATTENTION TRÈS LONG SI DÉROULÉ
-// convertir un caractère individuel en struct-lettre
-pub fn char_to_struct(caractere: char) -> Lettre {
+// converts one character to a instance of the Letter struct
+pub fn char_to_struct(caractere: char) -> Letter {
     match caractere {
         // the printable ASCII caracters in the official order
+        // plus some fancy french diacritics
 
-        // we won't really deal with newlines
-        '\n' => Lettre {
+        // we won't really deal with newlines here
+        '\n' => Letter {
             line1: r#" "#,
             line2: r#" "#,
             line3: r#" "#,
@@ -183,7 +17,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
         },
 
         // space ! " ~ $ % & ' ( ) * + , - . /
-        ' ' => Lettre {
+        ' ' => Letter {
             line1: r#"    "#,
             line2: r#"    "#,
             line3: r#"    "#,
@@ -191,7 +25,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"    "#,
             line6: r#"    "#,
         },
-        '!' => Lettre {
+        '!' => Letter {
             line1: r#" _  "#,
             line2: r#"| | "#,
             line3: r#"| | "#,
@@ -199,7 +33,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"(_) "#,
             line6: r#"    "#,
         },
-        '"' => Lettre {
+        '"' => Letter {
             line1: r#" _ _  "#,
             line2: r#"( | ) "#,
             line3: r#" V V  "#,
@@ -207,7 +41,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"      "#,
             line6: r#"      "#,
         },
-        '#' => Lettre {
+        '#' => Letter {
             line1: r#"   _  _    "#,
             line2: r#" _| || |_  "#,
             line3: r#"|_  ..  _| "#,
@@ -215,7 +49,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"  |_||_|   "#,
             line6: r#"           "#,
         },
-        '$' => Lettre {
+        '$' => Letter {
             line1: r#"  _   "#,
             line2: r#" | |  "#,
             line3: r#"/ __) "#,
@@ -223,7 +57,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"(   / "#,
             line6: r#" |_|  "#,
         },
-        '%' => Lettre {
+        '%' => Letter {
             line1: r#" _  __ "#,
             line2: r#"(_)/ / "#,
             line3: r#"  / /  "#,
@@ -231,7 +65,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"/_/(_) "#,
             line6: r#"       "#,
         },
-        '&' => Lettre {
+        '&' => Letter {
             line1: r#"  ___    "#,
             line2: r#" ( _ )   "#,
             line3: r#" / _ \/\ "#,
@@ -239,7 +73,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#" \___/\/ "#,
             line6: r#"         "#,
         },
-        '\'' => Lettre {
+        '\'' => Letter {
             line1: r#" _  "#,
             line2: r#"( ) "#,
             line3: r#"|/  "#,
@@ -247,7 +81,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"    "#,
             line6: r#"    "#,
         },
-        '(' => Lettre {
+        '(' => Letter {
             line1: r#"  __  "#,
             line2: r#" / /  "#,
             line3: r#"| |   "#,
@@ -255,7 +89,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"| |   "#,
             line6: r#" \_\  "#,
         },
-        ')' => Lettre {
+        ')' => Letter {
             line1: r#"__   "#,
             line2: r#"\ \  "#,
             line3: r#" | | "#,
@@ -263,7 +97,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#" | | "#,
             line6: r#"/_/  "#,
         },
-        '*' => Lettre {
+        '*' => Letter {
             line1: r#"       "#,
             line2: r#"__/\__ "#,
             line3: r#"\    / "#,
@@ -271,7 +105,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"  \/   "#,
             line6: r#"       "#,
         },
-        '+' => Lettre {
+        '+' => Letter {
             line1: r#"        "#,
             line2: r#"   _    "#,
             line3: r#" _| |_  "#,
@@ -279,7 +113,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"  |_|   "#,
             line6: r#"        "#,
         },
-        ',' => Lettre {
+        ',' => Letter {
             line1: "      ",
             line2: "      ",
             line3: "      ",
@@ -287,7 +121,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: "( )   ",
             line6: "|/    ",
         },
-        '-' => Lettre {
+        '-' => Letter {
             line1: r#"        "#,
             line2: r#"        "#,
             line3: r#" _____  "#,
@@ -295,7 +129,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"        "#,
             line6: r#"        "#,
         },
-        '.' => Lettre {
+        '.' => Letter {
             line1: r#"    "#,
             line2: r#"    "#,
             line3: r#"    "#,
@@ -303,7 +137,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"(_) "#,
             line6: r#"    "#,
         },
-        '/' => Lettre {
+        '/' => Letter {
             line1: r#"    __ "#,
             line2: r#"   / / "#,
             line3: r#"  / /  "#,
@@ -313,7 +147,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
         },
 
         // numbers and  : ; < = > ? @
-        '0' => Lettre {
+        '0' => Letter {
             line1: r#"  ___   "#,
             line2: r#" / _ \  "#,
             line3: r#"| | | | "#,
@@ -321,7 +155,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#" \___/  "#,
             line6: r#"        "#,
         },
-        '1' => Lettre {
+        '1' => Letter {
             line1: r#" __  "#,
             line2: r#"/_ | "#,
             line3: r#" | | "#,
@@ -329,7 +163,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#" |_| "#,
             line6: r#"     "#,
         },
-        '2' => Lettre {
+        '2' => Letter {
             line1: r#" ____   "#,
             line2: r#"|___ \  "#,
             line3: r#"  __) | "#,
@@ -337,7 +171,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"|_____| "#,
             line6: r#"        "#,
         },
-        '3' => Lettre {
+        '3' => Letter {
             line1: r#" _____  "#,
             line2: r#"|___ /  "#,
             line3: r#"  |_ \  "#,
@@ -345,7 +179,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"|____/  "#,
             line6: r#"        "#,
         },
-        '4' => Lettre {
+        '4' => Letter {
             line1: r#" _  _    "#,
             line2: r#"| || |   "#,
             line3: r#"| || |_  "#,
@@ -353,7 +187,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"   |_|   "#,
             line6: r#"         "#,
         },
-        '5' => Lettre {
+        '5' => Letter {
             line1: r#" ____   "#,
             line2: r#"| ___|  "#,
             line3: r#"|___ \  "#,
@@ -361,7 +195,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"|____/  "#,
             line6: r#"        "#,
         },
-        '6' => Lettre {
+        '6' => Letter {
             line1: r#"  __    "#,
             line2: r#" / /_   "#,
             line3: r#"| '_ \  "#,
@@ -369,7 +203,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#" \___/  "#,
             line6: r#"        "#,
         },
-        '7' => Lettre {
+        '7' => Letter {
             line1: r#" _____  "#,
             line2: r#"|___  | "#,
             line3: r#"   / /  "#,
@@ -377,7 +211,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#" /_/    "#,
             line6: r#"        "#,
         },
-        '8' => Lettre {
+        '8' => Letter {
             line1: r#"  ___   "#,
             line2: r#" ( _ )  "#,
             line3: r#" / _ \  "#,
@@ -385,7 +219,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#" \___/  "#,
             line6: r#"        "#,
         },
-        '9' => Lettre {
+        '9' => Letter {
             line1: r#"  ___   "#,
             line2: r#" / _ \  "#,
             line3: r#"| (_) | "#,
@@ -393,7 +227,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"   /_/  "#,
             line6: r#"        "#,
         },
-        ':' => Lettre {
+        ':' => Letter {
             line1: r#"    "#,
             line2: r#" _  "#,
             line3: r#"(_) "#,
@@ -401,7 +235,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"(_) "#,
             line6: r#"    "#,
         },
-        ';' => Lettre {
+        ';' => Letter {
             line1: r#"    "#,
             line2: r#" _  "#,
             line3: r#"(_) "#,
@@ -409,7 +243,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"( ) "#,
             line6: r#"|/  "#,
         },
-        '<' => Lettre {
+        '<' => Letter {
             line1: r#"  __ "#,
             line2: r#" / / "#,
             line3: r#"/ /  "#,
@@ -417,7 +251,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#" \_\ "#,
             line6: r#"     "#,
         },
-        '=' => Lettre {
+        '=' => Letter {
             line1: r#"        "#,
             line2: r#" _____  "#,
             line3: r#"|_____| "#,
@@ -425,7 +259,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"        "#,
             line6: r#"        "#,
         },
-        '>' => Lettre {
+        '>' => Letter {
             line1: r#"__   "#,
             line2: r#"\ \  "#,
             line3: r#" \ \ "#,
@@ -433,7 +267,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"/_/  "#,
             line6: r#"     "#,
         },
-        '?' => Lettre {
+        '?' => Letter {
             line1: r#" ___  "#,
             line2: r#"|__ \ "#,
             line3: r#"  / / "#,
@@ -441,7 +275,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#" (_)  "#,
             line6: r#"      "#,
         },
-        '@' => Lettre {
+        '@' => Letter {
             line1: r#"   ____   "#,
             line2: r#"  / __ \  "#,
             line3: r#" / / _` | "#,
@@ -452,7 +286,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
 
 
         // big case letters
-        'A' => Lettre {
+        'A' => Letter {
             line1: r#"    _     "#,
             line2: r#"   / \    "#,
             line3: r#"  / _ \   "#,
@@ -460,7 +294,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"/_/   \_\ "#,
             line6: r#"          "#,
         },
-        'B' => Lettre {
+        'B' => Letter {
             line1: r#" ____   "#,
             line2: r#"| __ )  "#,
             line3: r#"|  _ \  "#,
@@ -468,7 +302,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"|____/  "#,
             line6: r#"        "#,
         },
-        'C' => Lettre {
+        'C' => Letter {
             line1: r#"  ____  "#,
             line2: r#" / ___| "#,
             line3: r#"| |     "#,
@@ -476,7 +310,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#" \____| "#,
             line6: r#"        "#,
         },
-        'D' => Lettre {
+        'D' => Letter {
             line1: r#" ____   "#,
             line2: r#"|  _ \  "#,
             line3: r#"| | | | "#,
@@ -484,7 +318,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"|____/  "#,
             line6: r#"        "#,
         },
-        'E' => Lettre {
+        'E' => Letter {
             line1: r#" _____  "#,
             line2: r#"| ____| "#,
             line3: r#"|  _|   "#,
@@ -492,7 +326,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"|_____| "#,
             line6: r#"        "#,
         },
-        'F' => Lettre {
+        'F' => Letter {
             line1: r#" _____  "#,
             line2: r#"|  ___| "#,
             line3: r#"| |_    "#,
@@ -500,7 +334,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"|_|     "#,
             line6: r#"        "#,
         },
-        'G' => Lettre {
+        'G' => Letter {
             line1: r#"  ____  "#,
             line2: r#" / ___| "#,
             line3: r#"| |  _  "#,
@@ -508,7 +342,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#" \____| "#,
             line6: r#"        "#,
         },
-        'H' => Lettre {
+        'H' => Letter {
             line1: r#" _   _  "#,
             line2: r#"| | | | "#,
             line3: r#"| |_| | "#,
@@ -516,7 +350,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"|_| |_| "#,
             line6: r#"        "#,
         },
-        'I' => Lettre {
+        'I' => Letter {
             line1: r#" ___  "#,
             line2: r#"|_ _| "#,
             line3: r#" | |  "#,
@@ -524,7 +358,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"|___| "#,
             line6: r#"      "#,
         },
-        'J' => Lettre {
+        'J' => Letter {
             line1: r#"     _  "#,
             line2: r#"    | | "#,
             line3: r#" _  | | "#,
@@ -532,7 +366,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#" \___/  "#,
             line6: r#"        "#,
         },
-        'K' => Lettre {
+        'K' => Letter {
             line1: r#" _  __ "#,
             line2: r#"| |/ / "#,
             line3: r#"| ' /  "#,
@@ -540,7 +374,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"|_|\_\ "#,
             line6: r#"       "#,
         },
-        'L' => Lettre {
+        'L' => Letter {
             line1: r#" _      "#,
             line2: r#"| |     "#,
             line3: r#"| |     "#,
@@ -548,7 +382,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"|_____| "#,
             line6: r#"        "#,
         },
-        'M' => Lettre {
+        'M' => Letter {
             line1: r#" __  __  "#,
             line2: r#"|  \/  | "#,
             line3: r#"| |\/| | "#,
@@ -556,7 +390,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"|_|  |_| "#,
             line6: r#"         "#,
         },
-        'N' => Lettre {
+        'N' => Letter {
             line1: r#" _   _  "#,
             line2: r#"| \ | | "#,
             line3: r#"|  \| | "#,
@@ -564,7 +398,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"|_| \_| "#,
             line6: r#"        "#,
         },
-        'O' => Lettre {
+        'O' => Letter {
             line1: r#"  ____   "#,
             line2: r#" / __ \  "#,
             line3: r#"| |  | | "#,
@@ -572,7 +406,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#" \____/  "#,
             line6: r#"         "#,
         },
-        'P' => Lettre {
+        'P' => Letter {
             line1: r#" ____   "#,
             line2: r#"|  _ \  "#,
             line3: r#"| |_) | "#,
@@ -580,7 +414,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"|_|     "#,
             line6: r#"        "#,
         },
-        'Q' => Lettre {
+        'Q' => Letter {
             line1: r#"  ___   "#,
             line2: r#" / _ \  "#,
             line3: r#"| | | | "#,
@@ -588,7 +422,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#" \__\_\ "#,
             line6: r#"        "#,
         },
-        'R' => Lettre {
+        'R' => Letter {
             line1: r#" ____   "#,
             line2: r#"|  _ \  "#,
             line3: r#"| |_) | "#,
@@ -596,7 +430,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"|_| \_\ "#,
             line6: r#"        "#,
         },
-        'S' => Lettre {
+        'S' => Letter {
             line1: r#" ____   "#,
             line2: r#"/ ___|  "#,
             line3: r#"\___ \  "#,
@@ -604,7 +438,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"|____/  "#,
             line6: r#"        "#,
         },
-        'T' => Lettre {
+        'T' => Letter {
             line1: r#" _____  "#,
             line2: r#"|_   _| "#,
             line3: r#"  | |   "#,
@@ -612,7 +446,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"  |_|   "#,
             line6: r#"        "#,
         },
-        'U' => Lettre {
+        'U' => Letter {
             line1: r#" _   _  "#,
             line2: r#"| | | | "#,
             line3: r#"| | | | "#,
@@ -620,7 +454,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#" \___/  "#,
             line6: r#"        "#,
         },
-        'V' => Lettre {
+        'V' => Letter {
             line1: r#"__     __ "#,
             line2: r#"\ \   / / "#,
             line3: r#" \ \ / /  "#,
@@ -628,7 +462,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"   \_/    "#,
             line6: r#"          "#,
         },
-        'W' => Lettre {
+        'W' => Letter {
             line1: r#"__        __ "#,
             line2: r#"\ \      / / "#,
             line3: r#" \ \ /\ / /  "#,
@@ -636,7 +470,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"   \_/\_/    "#,
             line6: r#"             "#,
         },
-        'X' => Lettre {
+        'X' => Letter {
             line1: r#"__  __ "#,
             line2: r#"\ \/ / "#,
             line3: r#" \  /  "#,
@@ -644,7 +478,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"/_/\_\ "#,
             line6: r#"       "#,
         },
-        'Y' => Lettre {
+        'Y' => Letter {
             line1: r#"__   __ "#,
             line2: r#"\ \ / / "#,
             line3: r#" \ V /  "#,
@@ -652,7 +486,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"  |_|   "#,
             line6: r#"        "#,
         },
-        'Z' => Lettre {
+        'Z' => Letter {
             line1: r#" _____ "#,
             line2: r#"|__  / "#,
             line3: r#"  / /  "#,
@@ -662,7 +496,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
         },
 
         // [ \ ] ^ _ `
-        '[' => Lettre {
+        '[' => Letter {
             line1: r#" __  "#,
             line2: r#"| _| "#,
             line3: r#"| |  "#,
@@ -670,7 +504,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"| |  "#,
             line6: r#"|__| "#,
         },
-        '\\' => Lettre {
+        '\\' => Letter {
             line1: r#"__     "#,
             line2: r#"\ \    "#,
             line3: r#" \ \   "#,
@@ -678,7 +512,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"   \_\ "#,
             line6: r#"       "#,
         },
-        ']' => Lettre {
+        ']' => Letter {
             line1: r#" __  "#,
             line2: r#"|_ | "#,
             line3: r#" | | "#,
@@ -686,7 +520,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#" | | "#,
             line6: r#"|__| "#,
         },
-        '^' => Lettre {
+        '^' => Letter {
             line1: r#" /\  "#,
             line2: r#"|/\| "#,
             line3: r#"     "#,
@@ -694,7 +528,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"     "#,
             line6: r#"     "#,
         },
-        '_' => Lettre {
+        '_' => Letter {
             line1: r#"        "#,
             line2: r#"        "#,
             line3: r#"        "#,
@@ -702,7 +536,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#" _____  "#,
             line6: r#"|_____| "#,
         },
-        '`' => Lettre {
+        '`' => Letter {
             line1: r#" _  "#,
             line2: r#"( ) "#,
             line3: r#" \| "#,
@@ -712,7 +546,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
         },
 
         // small case letters
-        'a' => Lettre {
+        'a' => Letter {
             line1: r#"        "#,
             line2: r#"  __ _  "#,
             line3: r#" / _` | "#,
@@ -720,7 +554,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#" \__,_| "#,
             line6: r#"        "#,
         },
-        'b' => Lettre {
+        'b' => Letter {
             line1: r#" _      "#,
             line2: r#"| |__   "#,
             line3: r#"| '_ \  "#,
@@ -728,7 +562,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"|_.__/  "#,
             line6: r#"        "#,
         },
-        'c' => Lettre {
+        'c' => Letter {
             line1: r#"        "#,
             line2: r#"  ____  "#,
             line3: r#" / ___| "#,
@@ -736,7 +570,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#" \____| "#,
             line6: r#"        "#,
         },
-        'd' => Lettre {
+        'd' => Letter {
             line1: r#"     _  "#,
             line2: r#"  __| | "#,
             line3: r#" / _  | "#,
@@ -744,7 +578,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#" \__,_| "#,
             line6: r#"        "#,
         },
-        'e' => Lettre {
+        'e' => Letter {
             line1: r#"        "#,
             line2: r#"  ___   "#,
             line3: r#" / _  \ "#,
@@ -752,7 +586,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#" \____| "#,
             line6: r#"        "#,
         },
-        'f' => Lettre {
+        'f' => Letter {
             line1: r#"  __  "#,
             line2: r#" / _| "#,
             line3: r#"| |_  "#,
@@ -760,7 +594,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"|_|   "#,
             line6: r#"      "#,
         },
-        'g' => Lettre {
+        'g' => Letter {
             line1: r#"        "#,
             line2: r#"  __ _  "#,
             line3: r#" / _` | "#,
@@ -768,7 +602,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#" \__, | "#,
             line6: r#" |___/  "#,
         },
-        'h' => Lettre {
+        'h' => Letter {
             line1: r#" _      "#,
             line2: r#"| |__   "#,
             line3: r#"| '_ \  "#,
@@ -776,7 +610,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"|_| |_| "#,
             line6: r#"        "#,
         },
-        'i' => Lettre {
+        'i' => Letter {
             line1: r#" _  "#,
             line2: r#"(_) "#,
             line3: r#"| | "#,
@@ -784,7 +618,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"|_| "#,
             line6: r#"    "#,
         },
-        'j' => Lettre {
+        'j' => Letter {
             line1: r#"   _  "#,
             line2: r#"  (_) "#,
             line3: r#"  | | "#,
@@ -792,7 +626,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#" _/ | "#,
             line6: r#"|__/  "#,
         },
-        'k' => Lettre {
+        'k' => Letter {
             line1: r#" _     "#,
             line2: r#"| | __ "#,
             line3: r#"| |/ / "#,
@@ -800,7 +634,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"|_|\_\ "#,
             line6: r#"       "#,
         },
-        'l' => Lettre {
+        'l' => Letter {
             line1: r#" _  "#,
             line2: r#"| | "#,
             line3: r#"| | "#,
@@ -808,7 +642,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"|_| "#,
             line6: r#"    "#,
         },
-        'm' => Lettre {
+        'm' => Letter {
             line1: r#"            "#,
             line2: r#" _ __ ___   "#,
             line3: r#"| '_ ` _ \  "#,
@@ -816,7 +650,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"|_| |_| |_| "#,
             line6: r#"            "#,
         },
-        'n' => Lettre {
+        'n' => Letter {
             line1: r#"        "#,
             line2: r#" _ __   "#,
             line3: r#"| '_ \  "#,
@@ -824,7 +658,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"|_| |_| "#,
             line6: r#"        "#,
         },
-        'o' => Lettre {
+        'o' => Letter {
             line1: r#"        "#,
             line2: r#"  ___   "#,
             line3: r#" / _ \  "#,
@@ -832,7 +666,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#" \___/  "#,
             line6: r#"        "#,
         },
-        'p' => Lettre {
+        'p' => Letter {
             line1: r#"        "#,
             line2: r#" _ __   "#,
             line3: r#"| '_ \  "#,
@@ -840,7 +674,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"| .__/  "#,
             line6: r#"|_|     "#,
         },
-        'q' => Lettre {
+        'q' => Letter {
             line1: r#"        "#,
             line2: r#"  __ _  "#,
             line3: r#" / _` | "#,
@@ -848,7 +682,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#" \__, | "#,
             line6: r#"    |_| "#,
         },
-        'r' => Lettre {
+        'r' => Letter {
             line1: r#"       "#,
             line2: r#" _ __  "#,
             line3: r#"| '__| "#,
@@ -856,7 +690,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"|_|    "#,
             line6: r#"       "#,
         },
-        's' => Lettre {
+        's' => Letter {
             line1: r#"      "#,
             line2: r#"  __  "#,
             line3: r#"/ __| "#,
@@ -864,7 +698,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"|___/ "#,
             line6: r#"      "#,
         },
-        't' => Lettre {
+        't' => Letter {
             line1: r#" _    "#,
             line2: r#"| |_  "#,
             line3: r#"| __| "#,
@@ -872,7 +706,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#" \__| "#,
             line6: r#"      "#,
         },
-        'u' => Lettre {
+        'u' => Letter {
             line1: r#"        "#,
             line2: r#" _   _  "#,
             line3: r#"| | | | "#,
@@ -880,7 +714,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#" \__,_| "#,
             line6: r#"        "#,
         },
-        'v' => Lettre {
+        'v' => Letter {
             line1: r#"        "#,
             line2: r#"__   __ "#,
             line3: r#"\ \ / / "#,
@@ -888,7 +722,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"  \_/   "#,
             line6: r#"        "#,
         },
-        'w' => Lettre {
+        'w' => Letter {
             line1: r#"           "#,
             line2: r#"__      __ "#,
             line3: r#"\ \ /\ / / "#,
@@ -896,7 +730,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"  \_/\_/   "#,
             line6: r#"           "#,
         },
-        'x' => Lettre {
+        'x' => Letter {
             line1: r#"       "#,
             line2: r#"__  __ "#,
             line3: r#"\ \/ / "#,
@@ -904,7 +738,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"/_/\_\ "#,
             line6: r#"       "#,
         },
-        'y' => Lettre {
+        'y' => Letter {
             line1: r#"        "#,
             line2: r#" _   _  "#,
             line3: r#"| | | | "#,
@@ -912,7 +746,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#" \__, | "#,
             line6: r#" |___/  "#,
         },
-        'z' => Lettre {
+        'z' => Letter {
             line1: r#"      "#,
             line2: r#" ____ "#,
             line3: r#"|_  / "#,
@@ -922,7 +756,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
         },
 
         // { | } ~ and that's about it
-        '{' => Lettre {
+        '{' => Letter {
             line1: r#"    __ "#,
             line2: r#"   / / "#,
             line3: r#"  | |  "#,
@@ -930,7 +764,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"  | |  "#,
             line6: r#"   \_\ "#,
         },
-        '|' => Lettre {
+        '|' => Letter {
             line1: r#" _  "#,
             line2: r#"| | "#,
             line3: r#"| | "#,
@@ -938,7 +772,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#"| | "#,
             line6: r#"|_| "#,
         },
-        '}' => Lettre {
+        '}' => Letter {
             line1: r#"__    "#,
             line2: r#"\ \   "#,
             line3: r#" | |  "#,
@@ -946,7 +780,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#" | |  "#,
             line6: r#"/_/   "#,
         },
-        '~' => Lettre {
+        '~' => Letter {
             line1: r#"      "#,
             line2: r#"      "#,
             line3: r#" /\/| "#,
@@ -956,7 +790,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
         },
 
         // some fancy french letters
-        'à' => Lettre {
+        'à' => Letter {
             line1: r#"   \_\  "#,
             line2: r#"  __ _  "#,
             line3: r#" / _` | "#,
@@ -964,7 +798,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#" \__,_| "#,
             line6: r#"        "#,
         },
-        'ç' => Lettre {
+        'ç' => Letter {
             line1: r#"        "#,
             line2: r#"  ____  "#,
             line3: r#" / ___| "#,
@@ -972,7 +806,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#" \_  _| "#,
             line6: r#"   |/   "#,
         },
-        'é' => Lettre {
+        'é' => Letter {
             line1: r#"    __  "#,
             line2: r#"  _/_/  "#,
             line3: r#" / _  \ "#,
@@ -980,7 +814,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#" \____| "#,
             line6: r#"        "#,
         },
-        'è' => Lettre {
+        'è' => Letter {
             line1: r#"   __   "#,
             line2: r#"  _\ \  "#,
             line3: r#" / _  \ "#,
@@ -988,7 +822,7 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#" \____| "#,
             line6: r#"        "#,
         },
-        'ê' => Lettre {
+        'ê' => Letter {
             line1: r#"  /_\   "#,
             line2: r#"  ___   "#,
             line3: r#" / _  \ "#,
@@ -996,8 +830,8 @@ pub fn char_to_struct(caractere: char) -> Lettre {
             line5: r#" \____| "#,
             line6: r#"        "#,
         },
-        // En cas d'erreur, on renvoie un gros X
-        _ => Lettre {
+        // In case the character isn't recognised, we'll put a huge X to it
+        _ => Letter {
                 line1: "OO    OO",
                 line2: " OO  OO ",
                 line3: "  OOOO  ",
