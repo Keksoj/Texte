@@ -1,4 +1,4 @@
-## Texte, a figlet-like exercise
+## Texte, a figlet-like exercise in Rust
 
 The purpose of this small program is to prove to myself (and to others) that
 I'm doing actual progress learning Rust.

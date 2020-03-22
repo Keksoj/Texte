@@ -73,6 +73,15 @@ pub fn char_to_struct(caractere: char) -> Letter {
             line5: r#" \___/\/ "#,
             line6: r#"         "#,
         },
+        '’'=> Letter {
+            line1: r#" _  "#,
+            line2: r#"( ) "#,
+            line3: r#"|/  "#,
+            line4: r#"    "#,
+            line5: r#"    "#,
+            line6: r#"    "#,
+        },
+
         '\'' => Letter {
             line1: r#" _  "#,
             line2: r#"( ) "#,
